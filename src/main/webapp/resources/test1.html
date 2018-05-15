@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="handlebars-v4.0.10.js"></script>
+<style>
+	table,th,td,tr{
+		border: 1px solid red;
+		
+	}
+	table{
+		border-collapse: collapse;   
+	}
+</style>
+</head>
+<body>
+	<table id="tb">
+	
+	</table>
+	<script id="template" type="text/x-handlebars-template">
+		<tr>
+			<th>이름</th>
+			<th>아이디</th>
+			<th>메일주소</th>
+		</tr>
+		{{#users}}
+			<tr>
+				<td>{{name}}</td>
+				<td>{{id}}</td>
+				<td>{{email}}</td>
+			</tr>
+		{{/users}}
+		
+	</script> 
+	
+	<script type="text/javascript">
+		var data = {
+				users: [
+					{name:"매미1",id:"aaa1",email:"aaa1.gmail.com"},
+					{name:"매미2",id:"aaa2",email:"aaa2.gmail.com"},
+					{name:"매미3",id:"aaa3",email:"aaa3.gmail.com"},
+					{name:"매미4",id:"aaa4",email:"aaa4.gmail.com"},
+					{name:"매미5",id:"aaa5",email:"aaa5.gmail.com"}
+				]
+		};
+		
+		var source = $("#template").html();
+		var tFunc = Handlebars.compile(source);
+		
+		$("#tb").html(tFunc(data));
+		
+	</script>
+</body>
+</html>

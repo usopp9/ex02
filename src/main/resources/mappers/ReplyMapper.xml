@@ -21,4 +21,13 @@
 		delete from tbl_reply where rno = #{rno}
 	</delete>
 	
+	
+	<!-- 댓글 페이징 -->
+	<select id="listPage" resultType="ReplyVO">
+		select * from tbl_reply where bno = #{bno} order by rno desc limit #{cri.pageStart},#{cri.perPageNum}
+	</select>
+	
+	<select id="count" resultType="int">
+		select count(bno) from tbl_reply where bno = #{bno}
+	</select>
 </mapper>
