@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.dgit.util.MediaUtils;
+import com.dgit.util.UploadFileUtils;
 
 @Controller
 public class UploadController {
@@ -170,6 +171,8 @@ public class UploadController {
 		}
 		return entity;
 	}
+	
+	
 	@RequestMapping(value="dragUpload", method=RequestMethod.GET)
 	public String dragUpload(){
 		return "uploadDragForm";
@@ -220,17 +223,37 @@ public class UploadController {
 		logger.info("writer : " +writer);
 		logger.info("file : "+file.getOriginalFilename());
 		
-		UUID uid = UUID.randomUUID(); //중복되지 않는 고유한 키값을 설정할 때 사용
+		/*UUID uid = UUID.randomUUID(); //중복되지 않는 고유한 키값을 설정할 때 사용
 		String saveName = uid.toString() +"_"+ file.getOriginalFilename();
 		File target = new File(outerUploadPath+"/"+saveName);
-		FileCopyUtils.copy(file.getBytes(), target);
-		
-		
+		FileCopyUtils.copy(file.getBytes(), target);*/
+		String filePath = UploadFileUtils.uploadFile(outerUploadPath, file.getOriginalFilename(), file.getBytes());
+			
 		model.addAttribute("writer",writer);
-		model.addAttribute("file",saveName);
-		
-		
+		model.addAttribute("file",filePath);
 		
 		return "previewResult";
+	}
+	
+	@RequestMapping(value="deleteFile", method=RequestMethod.GET)
+	public String deleteFile(String filename){
+		logger.info("[deleteFile] filename: : " +filename);
+		
+		//원본, 썸네일 2가지 파일 삭제
+		/*String formatName = filename.substring(filename.lastIndexOf(".")+1);
+		logger.info("[deleteFile] formatName: : " +formatName);
+		
+		MediaType mType =MediaUtils.getMediaType(formatName);
+		
+		if(mType !=null){
+			String front = filename.substring(0, 12);
+			logger.info("[deleteFile] front: : " +front);
+			String end = filename.substring(14);
+			logger.info("[deleteFile] end: : " +end);
+			new File(outerUploadPath + (front+end).replace('/',File.separatorChar)).delete();
+		}
+			new File(outerUploadPath+ filename.replace('/', File.separatorChar)).delete();*/
+		UploadFileUtils.deleteFile(outerUploadPath, filename);
+		return "deleteResult";
 	}
 }
