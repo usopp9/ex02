@@ -43,4 +43,17 @@ public class HomeController {
 		
 		return "test";
 	}
+	
+	@RequestMapping(value="doA", method=RequestMethod.GET)
+	public String doAGet(Model model){
+		logger.info("doA GET..........................");
+		
+		return "home";
+	}
+	@RequestMapping(value="doB", method=RequestMethod.GET)
+	public String doBGet(Model model){
+		logger.info("doB GET..........................");
+		model.addAttribute("result","doB에서 보내는 데이타");
+		return "home";
+	}
 }
